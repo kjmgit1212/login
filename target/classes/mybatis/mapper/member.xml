@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.goodee.ex15.mapper.MemberMapper">
+
+	<!--  -->
+	<select id="selectMemberById" parameterType="String" resultType="MemberDTO">
+		SELECT MEMBER_NO, ID, PW, NAME, EMAIL, AGREE_STATE, SIGN_IN, PW_MODIFIED, INFO_MODIFIED, SESSION_ID, SESSION_LIMIT
+		 FROM MEMBER
+		WHERE ID=#{id} 
+	</select>
+	
+	<!--  -->
+	<select id="selectMemberByEmail" parameterType="String" resultType="MemberDTO">
+		SELECT MEMBER_NO, ID, PW, NAME, EMAIL, AGREE_STATE, SIGN_IN, PW_MODIFIED, INFO_MODIFIED, SESSION_ID, SESSION_LIMIT
+		 FROM MEMBER
+		WHERE EMAIL = #{email}
+	</select>
+	
+	<!--  회원가입 -->
+	<insert id="insertMember" parameterType="MemberDTO">
+		INSERT INTO MEMBER
+				(MEMBER_NO, ID, PW, NAME, EMAIL, AGREE_STATE, SIGN_IN, PW_MODIFIED, INFO_MODIFIED)
+			VALUES
+				(MEMBER_SEQ.NEXTVAL, #{id}, #{pw}, #{name}, #{email}, #{agreeState}, SYSDATE, SYSDATE, SYSDATE)
+	</insert>
+	
+	
+	<!-- 회원탈퇴 -->
+	<delete id="deleteMember" parameterType="Long">
+		DELETE
+		  FROM MEMBER
+		 WHERE MEMBER_NO = #{memberNo} 
+	</delete>
+	
+	
+	<select id="selectMemberByIdPw" parameterType="MemberDTO" resultType="MemberDTO">
+		SELECT MEMBER_NO, ID, PW, NAME, EMAIL, AGREE_STATE, SIGN_IN, PW_MODIFIED, INFO_MODIFIED, SESSION_ID, SESSION_LIMIT
+		 FROM MEMBER
+		WHERE ID=#{id}
+		  AND PW=#{pw} 
+	</select>
+	
+	<!--  로그인 기록 남기기 -->
+	
+	<insert id="insertMemberLog" parameterType="String">
+		INSERT INTO MEMBER_LOG
+			(MEMBER_LOG_NO, ID, SIGN_UP)
+		VALUES
+			(MEMBER_LOG_SEQ>NEXTVAL, #{id}, SYSDATE)	
+			
+	</insert>
+	
+</mapper>
