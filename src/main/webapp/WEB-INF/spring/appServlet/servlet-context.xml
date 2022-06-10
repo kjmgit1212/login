@@ -30,12 +30,33 @@
 				3. 인터셉터로 사용할 bean을 생성해 둬야 한다.
 			 -->
 			 <beans:bean class="com.goodee.ex15.interceptor.LoginInterceptor" id="loginInterceptor" />
+			 <beans:bean class="com.goodee.ex15.interceptor.PreventLoginInterceptor" id="preventLoginInterceptor" />
+			 <beans:bean class="com.goodee.ex15.interceptor.RequiredLoginInterceptor" id="requiredLoginInterceptor" />
+			 <beans:bean class="com.goodee.ex15.interceptor.KeepLoginInterceptor" id="keepLoginInterceptor" />
 			 
 			<interceptors>
 				<interceptor>
 					<mapping path="/member/login"/>
 					<beans:ref bean="loginInterceptor" />
 				</interceptor>
+				
+				<interceptor>
+					<mapping path="/member/agreePage"/>
+					<mapping path="/member/signInPage"/>
+					<mapping path="/member/loginPage"/>
+					<beans:ref bean="preventLoginInterceptor" />
+				</interceptor>
+				
+				<interceptor>
+					<mapping path="/board/savePage"/>
+					<beans:ref bean="requiredLoginInterceptor" />
+				</interceptor>
+				
+				<interceptor>
+					<mapping path="/**"/>
+					<beans:ref bean="keepLoginInterceptor" />
+				</interceptor>
+				
 			</interceptors>
 	
 	

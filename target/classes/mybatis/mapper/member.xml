@@ -49,8 +49,51 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INSERT INTO MEMBER_LOG
 			(MEMBER_LOG_NO, ID, SIGN_UP)
 		VALUES
-			(MEMBER_LOG_SEQ>NEXTVAL, #{id}, SYSDATE)	
+			(MEMBER_LOG_SEQ.NEXTVAL, #{id}, SYSDATE)	
 			
 	</insert>
+	
+	<!-- 탈퇴한 회원 조회 -->
+	<select id="selectSignOutMemberById" parameterType="String" resultType="SignOutMemberDTO">
+		SELECT SIGN_OUT_NO, MEMBER_NO, ID, NAME, EMAIL, AGREE_STATE, SIGN_OUT
+		  FROM SIGN_OUT_MEMBER
+		 WHERE ID = #{id} 
+	</select>
+	
+	
+	<!--  탈퇴한 멤버 재가입 -->
+	
+	<insert id="reInsertMember" parameterType="MemberDTO">
+		INSERT INTO MEMBER
+				(MEMBER_NO, ID, PW, NAME, EMAIL, AGREE_STATE, SIGN_IN, PW_MODIFIED, INFO_MODIFIED)
+			VALUES
+				(#{memberNo}, #{id}, #{pw}, #{name}, #{email}, #{agreeState}, SYSDATE, SYSDATE, SYSDATE)
+	</insert>
+	
+	<!-- 탈퇴한 회원 명단에서 제거 -->
+	<delete id="deleteSignOutMember" parameterType="String">
+		DELETE
+		  FROM SIGN_OUT_MEMBER
+		 WHERE ID = #{id} 
+	</delete>
+	
+	<!-- 로그인 유지를 선택한 회원의 Session 관련정보 업데이트 -->
+	<update id="updateSessionInfo" parameterType="MemberDTO">
+		UPDATE MEMBER
+		   SET SESSION_ID = #{sessionId}, SESSION_LIMIT = #{sessionLimit}
+		 WHERE ID = #{id} 
+	</update>
+	
+	<!-- 로그인 유지를 체크한 회원의 자동로그인 처리 -->
+	<select id="selectMemberBySessionId" parameterType="String" resultType="MemberDTO">
+		SELECT MEMBER_NO, ID, PW, NAME, EMAIL, AGREE_STATE, SIGN_IN, PW_MODIFIED, INFO_MODIFIED, SESSION_ID, SESSION_LIMIT
+		 FROM MEMBER
+		WHERE SESSION_ID = #{sessionId}
+	</select>
+	
+	
+	
+	
+	
 	
 </mapper>

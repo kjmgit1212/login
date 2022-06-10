@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	
 	<typeAliases>
 		<typeAlias type="com.goodee.ex15.domain.MemberDTO" alias="MemberDTO" />
+		<typeAlias type="com.goodee.ex15.domain.SignOutMemberDTO" alias="SignOutMemberDTO" />
 	</typeAliases>
 	
 </configuration>

@@ -5,6 +5,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.goodee.ex15.domain.MemberDTO;
+import com.goodee.ex15.domain.SignOutMemberDTO;
+
 public interface MemberService {
 
 	public Map<String, Object> idCheck(String id);
@@ -17,8 +20,13 @@ public interface MemberService {
 	
 	public void signOut(HttpServletRequest request, HttpServletResponse response);
 
-	public void login(HttpServletRequest request);
+	public MemberDTO login(HttpServletRequest request);
 	
+	public SignOutMemberDTO findSignOutMember(String id);
 	
+	public void reSignIn(HttpServletRequest request, HttpServletResponse response);
 	
+	public void keepLogin(HttpServletRequest request);
+	
+	public MemberDTO getMemberBySessionId(String sessionId);
 }
