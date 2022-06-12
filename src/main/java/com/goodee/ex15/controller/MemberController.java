@@ -2,6 +2,7 @@ package com.goodee.ex15.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -121,11 +122,16 @@ public class MemberController {
 	
 	// 컨트롤러에서 session을 선언해서 사용해도 괜찮음
 	@GetMapping("/member/logOut")
-	public String logOut(HttpSession session) {
+	public String logOut(HttpSession session, HttpServletResponse response) {
+		// session에 로그인 정보 제거
 		MemberDTO loginMember = (MemberDTO)session.getAttribute("loginMember");
 		if(loginMember != null) {
 			session.invalidate();
 		}
+		// 로그인 유지
+		Cookie cookie = new Cookie("keepLogin", "");
+		cookie.setMaxAge(0);
+		response.addCookie(cookie);
 		return "redirect:/";	// contextPath 이동과 같음
 	}
 	
