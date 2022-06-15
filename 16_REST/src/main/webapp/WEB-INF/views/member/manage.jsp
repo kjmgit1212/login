@@ -22,9 +22,96 @@
 		fnAdd();
 		fnList();
 		fnPagingLink();
+		fnDetail();
+		fnUpdate();
+		fnRemove();
 	})
 
 	/* 함수 */
+	
+	// 8. 회원삭제
+	function fnRemove(){
+		$('#btnRemove').on('click', function(){
+			let deleteCount = 0;
+			let checkedCount = 0;
+			for(let i = 0; i < $('.checkOne').length; i++){
+				/*
+					$('.checkOne')[i].value;
+					$($('.checkOne')[i]).val();
+				*/
+				if($($('.checkOne')[i]).is(':checked')){
+					checkedCount += 1;
+					$.ajax({
+						url: '${contextPath}/members/' + $('.checkOne')[i].value,
+						type: 'DELETE',
+						dataType: 'json',
+						success: function(obj){
+							deleteCount += obj.res;
+						}
+					})
+				}
+			}
+			if(deleteCount == checkedCount){
+				alert('모든 회원이 삭제되었습니다.');
+			}
+			fnList();
+		})
+	}
+	
+	// 7. 회원수정
+	function fnUpdate(){
+		$('#btnChange').on('click', function(){
+			// 수정할 회원 정보 JSON
+			let member = JSON.stringify(
+				{
+					memberNo: $('#memberNo').val(),
+					name: $('#name').val(),
+					gender: $(':radio[name="gender"]:checked').val(),
+					address: $('#address').val()
+				}
+			);
+			$.ajax({
+				url: '${contextPath}/members',
+				type: 'PUT',
+				data: member,
+				contentType: 'application/json',
+				dataType: 'json',
+				success: function(obj){
+					if(obj.res > 0){
+						alert('회원 정보가 수정되었습니다.');
+						fnList();
+					} else {
+						alert('회원 정보가 수정되지 않았습니다.');
+					}
+				},
+				error: function(jqXHR){
+					alert('예외코드[' + jqXHR.status + '] ' + jqXHR.responseText);
+				}
+			})
+		})
+	}
+	
+	// 6. 회원조회
+	function fnDetail(){
+		$(document).on('click', '.btnDetail', function(){
+			$.ajax({
+				url: '${contextPath}/members/' + $(this).data('member_no'),
+				type: 'GET',
+				dataType: 'json',
+				success: function(obj){
+					if(obj.member == null){
+						alert('해당 회원의 정보가 없습니다.');
+					} else {
+						$('#memberNo').val(obj.member.memberNo);
+						$('#id').val(obj.member.id).prop('readonly', true);
+						$('#name').val(obj.member.name);
+						$(':radio[name="gender"][value="' + obj.member.gender + '"]').prop('checked', true);
+						$('#address').val(obj.member.address);
+					}
+				}
+			})
+		})
+	}
 	
 	// 5. 페이징 링크 처리(page 전역변수 값을 링크의 data-page값으로 바꾸고 fnList() 호출)
 	function fnPagingLink(){
@@ -35,7 +122,7 @@
 	}
 	
 	// 4. 회원목록 + page 전역변수
-	var page = 1;
+	var page = 1;  // 초기화
 	function fnList(){
 		$.ajax({
 			url: '${contextPath}/members/page/' + page,
@@ -48,64 +135,64 @@
 		})
 	}
 	
-	// 4-1 회원목록 출력
+	// 4-1) 회원 목록 출력
 	function fnPrintMemberList(members){
 		$('#members').empty();
 		$.each(members, function(i, member){
 			var tr = '<tr>';
-			tr += '<td><input type="checkbox" class="checkOne" vaue="'+ member.memberNo +'"></td>';
-			tr += '<td>'+ member.id +'</td>';
-			tr += '<td>'+ member.name +'</td>';
-			tr += '<td>'+ member.gender +'</td>';
-			tr += '<td>'+ member.address +'</td>';
-			tr += '<td><input type="button" value="조회" class="btnDetail" data-member_no="'+ member.memberNo +'"></td>';
+			tr += '<td><input type="checkbox" class="checkOne" value="' + member.memberNo + '"></td>';
+			tr += '<td>' + member.id + '</td>';
+			tr += '<td>' + member.name + '</td>';
+			tr += '<td>' + member.gender + '</td>';
+			tr += '<td>' + member.address + '</td>';
+			tr += '<td><input type="button" value="조회" class="btnDetail" data-member_no="' + member.memberNo + '"></td>';
 			tr += '</tr>';
 			$('#members').append(tr);
 		})
-		
 	}
 	
-	// 4-2 paging 출력
+	// 4-2) 페이징 정보 출력
 	function fnPrintPaging(p){
 		
 		$('#paging').empty();
 		
 		var paging = '';
-		// ◀◀ : 이전블록으로 이동
+		
+		// ◀◀ : 이전 블록으로 이동
 		if(page <= p.pagePerBlock){
 			paging += '<div class="disable_link">◀◀</div>';
-		}else{
-			paging += '<div class="enable_link" data-page="'+ (p.beginPage - 1) +'">◀◀</div>';
+		} else {
+			paging += '<div class="enable_link" data-page="' + (p.beginPage - 1) + '">◀◀</div>';
 		}
 		
-		// ◀ : 이전페이지으로 이동
+		// ◀  : 이전 페이지로 이동
 		if(page == 1){
 			paging += '<div class="disable_link">◀</div>';
-		}else{
-			paging += '<div class="enable_link" data-page="'+ (page - 1) +'">◀</div>';
+		} else {
+			paging += '<div class="enable_link" data-page="' + (page - 1) + '">◀</div>';
 		}
 		
-		// 1 2 3 4 5 페이지 번호
+		// 1 2 3 4 5 : 페이지 번호
 		for(let i = p.beginPage; i <= p.endPage; i++){
-			if(page == 1){
+			if(i == page){
 				paging += '<div class="disable_link now_page">' + i + '</div>';
-			}else{
-				paging += '<div class="enable_link" data-page="'+ i +'">' + i + '</div>';
+			} else {
+				paging += '<div class="enable_link" data-page="' + i + '">' + i + '</div>';
 			}
 		}
 		
-		// ▶ : 다음페이지으로 이동
+		// ▶  : 다음 페이지로 이동
 		if(page == p.totalPage){
 			paging += '<div class="disable_link">▶</div>';
-		}else{
-			paging += '<div class="enable_link" data-page="'+ (page + 1) +'">▶</div>';
+		} else {
+			paging += '<div class="enable_link" data-page="' + (page + 1) + '">▶</div>';
 		}
 		
-		// ▶▶ 다음블록 이동
+		// ▶▶ : 다음 블록으로 이동
 		if(p.endPage == p.totalPage){
 			paging += '<div class="disable_link">▶▶</div>';
-		}else{
-			paging += '<div class="enable_link" data-page="'+ (p.endPage + 1) +'">▶▶</div>';
+		} else {
+			paging += '<div class="enable_link" data-page="' + (p.endPage + 1) + '">▶▶</div>';
 		}
 		
 		$('#paging').append(paging);
@@ -143,9 +230,7 @@
 					}
 				},
 				error: function(jqXHR){
-					if(jqXHR.status == 501){  // 아이디 중복 코드
-						alert('예외코드[' + jqXHR.status + ']' + jqXHR.responseText);
-					}
+					alert('예외코드[' + jqXHR.status + '] ' + jqXHR.responseText);
 				}
 			})
 		})
@@ -177,33 +262,26 @@
 	
 </script>
 <style>
-	#paging{
+	#paging {
 		display: flex;
 		justify-content: center;
 	}
-	
-	#paging div{
+	#paging div {
 		width: 32px;
 		height: 20px;
 		text-align: center;
 	}
-	
-	.disable_link{
+	.disable_link {
 		color: lightgray;
 	}
-	.enable_link{
+	.enable_link {
 		cursor: pointer;
-		
 	}
-	
-	.now_page{
+	.now_page {
 		border: 1px solid gray;
 		color: limegreen;
 		font-weight: 900;
 	}
-	
-	
-	
 </style>
 </head>
 <body>
@@ -211,6 +289,7 @@
 	<h1>회원관리</h1>
 	
 	<div>
+		<input type="hidden" name="memberNo" id="memberNo">
 		아이디 <input type="text" name="id" id="id"><br>
 		이름   <input type="text" name="name" id="name"><br>
 		성별
@@ -245,6 +324,7 @@
 			</tr>
 		</tfoot>
 	</table>
+	
 	<br>
 	
 	<input type="button" value="선택삭제" id="btnRemove">

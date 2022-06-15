@@ -24,4 +24,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		 WHERE A.ROW_NUM BETWEEN #{beginRecord} AND #{endRecord} 		  
 	</select>
 
+	<select id="selectMemberByNo" parameterType="Long" resultType="MemberDTO">
+		SELECT MEMBER_NO, ID, NAME, GENDER, ADDRESS
+		  FROM MEMBER
+		 WHERE MEMBER_NO = #{memberNo} 
+	</select>
+
+	<update id="updateMember" parameterType="MemberDTO">
+		UPDATE MEMBER
+		   SET NAME = #{name}, GENDER = #{gender}, ADDRESS = #{address}
+		 WHERE MEMBER_NO = #{memberNo}  
+	</update>
+
+	<delete id="deleteMember" parameterType="Long">
+		DELETE
+		  FROM MEMBER
+		 WHERE MEMBER_NO = #{memberNo} 
+	</delete>
+
 </mapper>
