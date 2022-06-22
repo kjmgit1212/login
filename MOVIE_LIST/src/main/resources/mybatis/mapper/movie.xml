@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.goodee.movie.mapper.MovieMapper">
+
+	<select id="selectMovieList" parameterType="Map" resultType="MovieDTO">
+		SELECT MOVIE_NO, MOVIE_TITLE, MOVIE_GENRE, MOVIE_INFO, MOVIE_OPEN_DT
+		  FROM MOVIE
+	</select>
+	
+	
+	
+</mapper>
