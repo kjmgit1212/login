@@ -32,7 +32,8 @@
 <body>
 		
 		<form action="${contextPath}/book/insertApi" id="getBookInfo">
-		<button>api 정보받아오기</button>
+			<input type="text" name="query" id="query">
+			<button>api 정보받아오기</button>
 		</form>
 
 </body>

@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,8 +22,9 @@
 			fnSaveReply();
 			fnInit();
 			fnRecomBook();
+
 		})	
-	
+
 		// 1. 댓글목록
 		function fnList(){
 			$.ajax({
@@ -90,7 +92,7 @@
 				success: function(obj){
 					$.each(obj.recom, function(i, recom){
 						var sp = '<span>';
-						sp += '<ul><img src="' + recom.bookImage + '" width=150px height=170px></ul>';
+						sp += '<ul><a href="${contextPath}/book/detail?bookNo=' + recom.bookNo + '"><img src="' + recom.bookImage + '" width=130px height=170px></a></ul>';
 						sp += '<ul>' + recom.bookTitle + '</ul>';
 						sp += '</span>'
 						$('#recomeBook').append(sp);
@@ -100,7 +102,6 @@
 			})
 			
 		}
-		
 		
 		
 		function fnInit(){
@@ -157,30 +158,34 @@
 		
 		#recomeBook{
 			display: flex;
+			text-align: center;
 		}
 
 </style>
 </head>
 <body>
-	
+		
 			<div>
-				<img src="${book.bookImage}" width="200px" height="300px" >
-				<dl>
-					<dt>${book.bookTitle}</dt>
-					<dt>${book.bookAuthor}</dt>
-					<dt>${book.bookPublisher}</dt>
-					<dt>${book.bookPubdate}</dt>
-					<dt>${book.bookField}</dt>
-					
+				<span><img src="${book.bookImage}" width="200px" height="300px" ></span>
+				<span>${book.bookTitle}</span>
+				<span>${book.bookAuthor}</span>
+				<span>${book.bookPublisher}</span>
+				<span>${book.bookField}</span>
+				
 					<br>
 					
-					<h3>책소개</h3>
-					<dt>${book.bookDescription}</dt>
-				</dl>
+			<h3>책소개</h3>
+				<span>${book.bookDescription}</span>
+				
 			</div>
+		
 			<br><br>
-	
-	
+			
+			<h3>추천도서</h3>
+			<div id="recomeBook"></div>
+			
+			<br>
+			
 			<div class="wrap">
     		<h3>한줄 감상평</h3>
 			    <form id="contentReg">			 
@@ -211,13 +216,6 @@
 					  	<input type="button" id="btnReg" value="등록하기">
 			    </form>
 			</div>
-			
-			<br><br>
-			
-			<h3>추천도서</h3>
-			<div id="recomeBook"></div>
-			
-			<br>
 			
 			<h3>감상평</h3>
 			
