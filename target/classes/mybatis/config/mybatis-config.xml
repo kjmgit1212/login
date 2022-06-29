@@ -10,8 +10,23 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	</settings>
 	
 	<typeAliases>
-		<typeAlias type="com.goodee.ex15.domain.MemberDTO" alias="MemberDTO" />
-		<typeAlias type="com.goodee.ex15.domain.SignOutMemberDTO" alias="SignOutMemberDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.BookDTO" alias="BookDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.BookReplyDTO" alias="BookReplyDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.DormantMemberDTO" alias="DormantMemberDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.FnqDTO" alias="FnqDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.FnqFileAttachDTO" alias="FnqFileAttachDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.MemberDTO" alias="MemberDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.MemberLogDTO" alias="MemberLogDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.NoticeDTO" alias="NoticeDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.NoticeFileAttachDTO" alias="NoticeFileAttachDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.OverdueDTO" alias="OverdueDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.QaaDTO" alias="QaaDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.RentDTO" alias="RentDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.ReturnedDTO" alias="ReturnedDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.SeatDTO" alias="SeatDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.SignOutMemberDTO" alias="SignOutMemberDTO" />
+		<typeAlias type="com.goodee.gdlibrary.domain.ReservationDTO" alias="ReservationDTO" />
+		
 	</typeAliases>
 	
 </configuration>

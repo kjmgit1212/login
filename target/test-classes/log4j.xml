@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.goodee.ex15">
+	<logger name="com.goodee.gdlibrary">
 		<level value="info" />
 	</logger>
 	
