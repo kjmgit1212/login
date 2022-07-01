@@ -3,7 +3,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -12,6 +12,33 @@
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="../resources/js/jquery-3.6.0.js"></script>
+
+<style>
+	#paging {
+		display: flex;
+		justify-content: center;
+	}
+	#paging div {
+		width: 32px;
+		height: 20px;
+		text-align: center;
+	}
+	.disable_link {
+		color: lightgray;
+	}
+	.enable_link {
+		cursor: pointer;
+	}
+	.now_page {
+		border: 1px solid gray;
+		color: limegreen;
+		font-weight: 900;
+		border: ;
+	}
+	
+	
+	
+</style>
 <script>
 		//별점	
 		//별점 마킹 모듈 프로토타입으로 생성
@@ -22,33 +49,36 @@
 			fnSaveReply();
 			fnRecomBook();
 			fnPagingLink();
-		})	
 
+		})	
+		
+		
+		var page = 1;
 		// 1. 댓글목록
 		function fnList(){
-			var page = 1;
 			$.ajax({
 				url: '${contextPath}/reply/list',
 				type: 'GET',
 				data: 'bookNo=${book.bookNo}' + '&page=' + page,
 				dataType: 'json',
 				success: function(obj){
-					console.log(obj.p);
 					$('#replyCount').text(obj.replyCount);
 					$('#replyRatingAverage').text(obj.replyRatingAverage);
-					fnPrintReplyList(obj.replies);
+					fnPrintReplyList(obj.replies, obj.p);
 					fnPrintPaging(obj.p);
 					
 				}
 			})
 		}
 		// 1-1 목록출력
-		function fnPrintReplyList(replies){
+		function fnPrintReplyList(replies, p){
 			$('#reviewList').empty();
+			console.log(p);
 			$.each(replies, function(i, reply){
 				var tr = '<tr>'
 				var userRating = reply.bookRating
-				tr += '<td>' + reply.bookReplyNo + '</td>';
+				
+				tr += '<td>' + p.beginRecord++ + '</td>';
 					switch(userRating){
 					case 1 : tr += '<td class="userRating">★</td>'; break;
 					case 2 : tr += '<td class="userRating">★★</td>'; break;
@@ -56,7 +86,6 @@
 					case 4 : tr += '<td class="userRating">★★★★</td>'; break;
 					case 5 : tr += '<td class="userRating">★★★★★</td>'; break;
 					}
-				
 				tr += '<td>' + reply.memberId + '</td>';
 				tr += '<td>' + reply.bookReplyContent + '</td>';
 				tr += '<td>' + reply.bookReplyCreated + '</td>';
@@ -66,16 +95,16 @@
 			})
 		}
 		
-		// 페이징 링크 처리(page 전역변수 값을 링크의 data-page값으로 바꾸고 fnList() 호출)
-		function fnPagingLink(){
+		// 1-2 페이징 링크 처리
+			function fnPagingLink(){
 			$(document).on('click', '.enable_link', function(){
 				page = $(this).data('page');
 				fnList();
 			})
 		}
 		
-		// 1-2 paging
-		function fnPrintPaging(p){
+		// 1-3 목록출력
+			function fnPrintPaging(p){
 			
 			$('#paging').empty();
 			
@@ -123,8 +152,9 @@
 		}
 		
 		// 2. 감상평등록
-		function fnSaveReply(){
+			function fnSaveReply(){
 			$('#btnReg').on('click', function(){
+				
 				var review = JSON.stringify({
 					bookNo:$('#bookNo').val(),
 					bookReplyContent:$('#bookReplyContent').val(),
@@ -140,7 +170,7 @@
 							if(obj.res > 0){
 								alert('감상평이 등록되었습니다.');
 								fnList();
-								
+								fnInit();
 						}
 					}
 					
@@ -148,8 +178,12 @@
 			})
 		}
 
+			function fnInit(){
+				$('#bookReplyContent').val('');
+			}
+		
 		// 3. 추천책
-		function fnRecomBook(){
+			function fnRecomBook(){
 			$.ajax({
 				url: '${contextPath}/book/recomBook',
 				type: 'get',
@@ -167,14 +201,10 @@
 			})
 			
 		}
-
-		
-		
 		
 	
 </script>
 <style>
-
 
 	.contentGroup .no1{
 		display: inline-flex;
@@ -288,10 +318,13 @@
 			<h3>감상평</h3>
 			
 			<div id="replyInfo">
+				<c:forEach items="${employees}" var="emp" varStatus="vs">
 				<em>감상평 <span id="replyCount"></span>개 평균평점 <span id="replyRatingAverage"></span>점</em>
+				</c:forEach>
+				<input type="button" id="btnSearchAll" value="목록가기" onclick="location.href='${contextPath}/book/listPage'"/>
 		   </div>
 			
-			<table border="1">
+			<table class="replyList">
 				<thead>
 
 					<tr>

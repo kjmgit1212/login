@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goodee.gdlibrary.domain.BookReplyDTO;
 import com.goodee.gdlibrary.mapper.BookReplyMapper;
-import com.goodee.gdlibrary.util.PageUtils;
+import com.goodee.gdlibrary.util.PageUtils1;
 
 public class BookReplyServiceImpl implements BookReplyService {
 
@@ -21,7 +21,6 @@ public class BookReplyServiceImpl implements BookReplyService {
 	public Map<String, Object> addReview(BookReplyDTO reply) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("res", bookReplyMapper.insertReview(reply));
-		
 		return map;
 	}
 	
@@ -31,7 +30,7 @@ public class BookReplyServiceImpl implements BookReplyService {
 		int page = Integer.parseInt(request.getParameter("page"));
 		
 		Integer totalRecord = bookReplyMapper.selectReplyCount(bookNo);
-		PageUtils p = new PageUtils();
+		PageUtils1 p = new PageUtils1();
 		p.setPageEntity(totalRecord, page);
 		
 		

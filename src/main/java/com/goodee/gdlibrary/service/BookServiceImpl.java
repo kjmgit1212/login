@@ -22,7 +22,7 @@ import org.springframework.ui.Model;
 
 import com.goodee.gdlibrary.domain.BookDTO;
 import com.goodee.gdlibrary.mapper.BookMapper;
-import com.goodee.gdlibrary.util.PageUtils;
+import com.goodee.gdlibrary.util.PageUtils1;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -102,7 +102,7 @@ public class BookServiceImpl implements BookService {
 		
 		// page, totalRecord를 이용해서 페이징
 		Integer totalRecord = bookMapper.selectBookCount();
-		PageUtils p = new PageUtils();
+		PageUtils1 p = new PageUtils1();
 		p.setPageEntity(totalRecord, page);
 		
 		// 목록은 beginRecord ~ endRecord 사이값을 가져온다.
@@ -131,7 +131,7 @@ public class BookServiceImpl implements BookService {
 		map.put("column", column);
 		
 		Integer totalRecord = bookMapper.searchBookCount(map);
-		PageUtils p = new PageUtils();
+		PageUtils1 p = new PageUtils1();
 		p.setPageEntity(totalRecord, page);
 		
 		map.put("beginRecord", p.getBeginRecord());

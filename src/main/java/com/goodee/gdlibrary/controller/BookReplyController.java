@@ -30,7 +30,8 @@ public class BookReplyController {
 	@ResponseBody
 	@GetMapping(value="/reply/list", produces="application/json; charset=UTF-8")
 	public Map<String, Object> list(HttpServletRequest request) {
-		return bookReplyService.bookReplyList(request);
+		
+		return bookReplyService.bookReplyList(request); 
 	}
 	
 }

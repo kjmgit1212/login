@@ -23,6 +23,11 @@ public class BookController {
 		return "book/list";
 	}
 	
+	@GetMapping("book/indexPage")
+	public String indexPage() {
+		return "book/aa";
+	}
+	
 	@ResponseBody
 	@GetMapping(value="/book/list", produces="application/json")
 	public Map<String, Object> bookList(@RequestParam(value="page", required=false, defaultValue="1") int page) {

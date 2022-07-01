@@ -18,6 +18,8 @@
 	<a href="${contextPath}/reservation/reservationPage">좌석예약</a><br>
 	<a href="${contextPath}/book/listPage">책</a>
 	<a href="${contextPath}/admin/manage">관리자페이지</a>
+	<a href="${contextPath}/book/indexPage">인덱스</a>
+	
 =======
 <<<<<<< HEAD
 	<jsp:include page="./layout/header.jsp"></jsp:include>

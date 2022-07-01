@@ -24,7 +24,7 @@
 			$('#getBookInfo').on('submit',function(){
 				var regField = /^[0-9]{1,2}$/;
 				var query = $('#query')
-				query.on('keyup', function(event){
+				query.on('keyup', function(){
 					if(regField.test($('#query').val()) == false){
 						alert('숫자만 입력하기 바랍니다.');
 						query.val('');

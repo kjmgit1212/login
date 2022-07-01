@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                             ON B.BOOK_NO = BR.BOOK_NO
                          GROUP BY B.BOOK_NO, B.BOOK_TITLE, B.BOOK_AUTHOR, B.BOOK_DESCRIPTION, B.BOOK_IMAGE) A
          		 ORDER BY A.AVERAGE DESC) B
- 	     <![CDATA[WHERE ROWNUM <= 3]]>
+ 	     <![CDATA[WHERE ROWNUM <= 5]]>
 	</select>
 	
 </mapper>
